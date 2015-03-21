@@ -1,40 +1,5 @@
-import {Component, Template, Foreach, bootstrap} from 'angular2/angular2';
-
-class Store {
-  constructor() {
-    this._listeners = [];
-  }
-
-  addChangeListener(listener) {
-    this._listeners.push(listener);
-  }
-
-  emitChange() {
-    this._listeners.forEach((listener) => {
-      listener();
-    });
-  }
-}
-
-class TodoStore extends Store {
-  constructor() {
-    super();
-    this._todos = [];
-  }
-
-  add(todo) {
-    this._todos.push(todo);
-    this.emitChange();
-  }
-
-  getAll() {
-    return this._todos;
-  }
-
-  countLeft() {
-    return this._todos.filter((t) => !t.done).length;
-  }
-}
+import {TodoStore} from 'services';
+import {Component, Template, Foreach, If, bootstrap} from 'angular2/angular2';
 
 @Component({
   selector: 'todo-item',
@@ -64,8 +29,14 @@ class TodoStore extends Store {
   `
 })
 class TodoItemComponent {
+  store: TodoStore;
+
+  constructor(store: TodoStore) {
+    this.store = store;
+  }
+
   toggle() {
-    this.todo.done = !this.todo.done;
+    this.store.toggleDone(this.todo);
   }
 }
 
@@ -117,10 +88,12 @@ class TodoFormComponent {
     <ul>
       <todo-item *foreach="#todo in todos" [todo]="todo"></todo-item>
     </ul>
-    <p>{{ countLeft() }} todos left</p>
+    <template [if]="hasUndone"><p>{{ undoneCount }} todos left.</p></template>
+    <template [if]="!hasUndone"><p>Yay, no todos left!</p></template>
   `,
   directives: [
     Foreach,
+    If,
     TodoItemComponent,
     TodoFormComponent
   ]
@@ -130,21 +103,18 @@ class TodoListComponent {
 
   constructor(store: TodoStore) {
     this.store = store;
-    // TIPS: Actually we don't need this because of change detection on `this.todos`.
-    this.store.addChangeListener(this.updateTodos.bind(this));
+    this.store.addChangeListener(this.update.bind(this));
 
     this.store.add({ description: 'foo', done: false });
     this.store.add({ description: 'bar', done: false });
 
-    this.updateTodos();
+    this.update();
   }
 
-  countLeft() {
-    return this.store.countLeft();
-  }
-
-  updateTodos() {
+  update() {
     this.todos =  this.store.getAll();
+    this.undoneCount = this.store.countUndone();
+    this.hasUndone = this.undoneCount > 0;
   }
 }
 
