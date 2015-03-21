@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Angular 2 Todo</title>
+    <script src="/quickstart/dist/es6-shim.js"></script>
+  </head>
+  <body>
+    <todo-list></todo-list>
+    <script>
+      System.paths = {
+        'angular2/*': '/quickstart/angular2/*.js',
+        'rtts_assert/*': '/quickstart/rtts_assert/*.js',
+        'app': 'app.es6'
+      };
+      System.import('app');
+    </script>
+  </body>
+</html>
