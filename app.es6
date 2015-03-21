@@ -65,6 +65,9 @@ class TodoFormComponent {
   }
 
   add() {
+    if (!this.description) {
+      return;
+    }
     this.store.add({
       description: this.description,
       done: false
@@ -88,8 +91,8 @@ class TodoFormComponent {
     <ul>
       <todo-item *foreach="#todo in todos" [todo]="todo"></todo-item>
     </ul>
-    <template [if]="hasUndone"><p>{{ undoneCount }} todos left.</p></template>
-    <template [if]="!hasUndone"><p>Yay, no todos left!</p></template>
+    <p *if="hasUndone">{{ undoneCount }} todos left.</p>
+    <p *if="!hasUndone">Yay, no todos left!</p>
   `,
   directives: [
     Foreach,
@@ -111,6 +114,8 @@ class TodoListComponent {
     this.update();
   }
 
+  // React-like re-rendering. Actually we don't need to do this if we put
+  // everything in expressions.
   update() {
     this.todos =  this.store.getAll();
     this.undoneCount = this.store.countUndone();
