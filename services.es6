@@ -1,41 +1,14 @@
-class Store {
-  constructor() {
-    this._listeners = [];
-  }
-
-  addChangeListener(listener) {
-    this._listeners.push(listener);
-  }
-
-  emitChange() {
-    this._listeners.forEach((listener) => {
-      listener();
-    });
-  }
-}
-
-// TODO: Use unique ID.
-export class TodoStore extends Store {
+export class TodoStore {
   constructor() {
     super();
-    this._todos = [];
+    this.todos = [];
   }
 
   add(todo) {
-    this._todos.push(todo);
-    this.emitChange();
-  }
-
-  getAll() {
-    return this._todos;
+    this.todos.push(todo);
   }
 
   countUndone() {
-    return this._todos.filter((t) => !t.done).length;
-  }
-
-  toggleDone(todo) {
-    todo.done = !todo.done;
-    this.emitChange();
+    return this.todos.filter((t) => !t.done).length;
   }
 }

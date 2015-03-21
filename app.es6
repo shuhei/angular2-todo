@@ -36,7 +36,7 @@ class TodoItemComponent {
   }
 
   toggle() {
-    this.store.toggleDone(this.todo);
+    this.todo.done = !this.todo.done;
   }
 }
 
@@ -91,8 +91,8 @@ class TodoFormComponent {
     <ul>
       <todo-item *foreach="#todo in todos" [todo]="todo"></todo-item>
     </ul>
-    <p *if="hasUndone">{{ undoneCount }} todos left.</p>
-    <p *if="!hasUndone">Yay, no todos left!</p>
+    <p *if="hasUndone()">{{ countUndone() }} todos left.</p>
+    <p *if="!hasUndone()">Yay, no todos left!</p>
   `,
   directives: [
     Foreach,
@@ -106,20 +106,18 @@ class TodoListComponent {
 
   constructor(store: TodoStore) {
     this.store = store;
-    this.store.addChangeListener(this.update.bind(this));
+    this.todos = this.store.todos;
 
     this.store.add({ description: 'foo', done: false });
     this.store.add({ description: 'bar', done: false });
-
-    this.update();
   }
 
-  // React-like re-rendering. Actually we don't need to do this if we put
-  // everything in expressions.
-  update() {
-    this.todos =  this.store.getAll();
-    this.undoneCount = this.store.countUndone();
-    this.hasUndone = this.undoneCount > 0;
+  countUndone() {
+    return this.store.countUndone();
+  }
+
+  hasUndone() {
+    return this.store.countUndone() > 0;
   }
 }
 
