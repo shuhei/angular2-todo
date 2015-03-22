@@ -1,0 +1,15 @@
+<h1>Todo</h1>
+<todo-form></todo-form>
+<ul>
+  <todo-item *foreach="#todo in todos" [todo]="todo"></todo-item>
+</ul>
+<p *if="hasUndone">{{ undoneCount }} todos left.</p>
+<p *if="!hasUndone">Yay, no todos left!</p>
+
+<style>
+  @import '../css/common.css';
+
+  ul {
+    padding-left: 0;
+  }
+</style>

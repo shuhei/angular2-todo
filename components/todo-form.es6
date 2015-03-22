@@ -6,10 +6,7 @@ import {Component, Template} from 'angular2/angular2';
   // TIPS: Don't put `componentServices: [TodoStore]` here. It will make another instance.
 })
 @Template({
-  inline: `
-    <input type="text" [value]="description" (keyup)="update($event)">
-    <button (click)="add()">Add</button>
-  `
+  url: 'components/todo-form.html'
 })
 export class TodoFormComponent {
   store: TodoStore;

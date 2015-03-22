@@ -12,15 +12,7 @@ import {TodoFormComponent} from 'components/todo-form';
   ]
 })
 @Template({
-  inline: `
-    <h1>Todo</h1>
-    <todo-form></todo-form>
-    <ul>
-      <todo-item *foreach="#todo in todos" [todo]="todo"></todo-item>
-    </ul>
-    <p *if="hasUndone">{{ undoneCount }} todos left.</p>
-    <p *if="!hasUndone">Yay, no todos left!</p>
-  `,
+  url: 'components/todo-list.html',
   directives: [
     Foreach,
     If,
@@ -35,8 +27,8 @@ export class TodoListComponent {
     this.store = store;
     this.store.addChangeListener(this.update.bind(this));
 
-    this.store.add({ description: 'foo', done: false });
-    this.store.add({ description: 'bar', done: false });
+    this.store.add({ description: 'Migrate to Angular 1.4', done: false });
+    this.store.add({ description: 'Learn Angular 2', done: false });
 
     this.update();
   }

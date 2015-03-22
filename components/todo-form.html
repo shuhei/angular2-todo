@@ -1,0 +1,16 @@
+<input type="text" [value]="description" (keyup)="update($event)">
+<button (click)="add()">Add</button>
+
+<style>
+  @import '../css/common.css';
+
+  input {
+    padding: 0.3em;
+  }
+
+  button {
+    background-color: #c8a777;
+    color: #fff;
+    padding: 0.8em 0.7em 0.6em;
+  }
+</style>

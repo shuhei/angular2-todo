@@ -8,25 +8,7 @@ import {Component, Template} from 'angular2/angular2';
   }
 })
 @Template({
-  inline: `
-    <li [class.done]="todo.done">
-      <label>
-        <input type="checkbox"
-               (click)="toggle()"
-               [checked]="todo.done">
-        {{ todo.description }}
-      </label>
-    </li>
-
-    <style>
-      label {
-        cursor: pointer;
-      }
-      .done {
-        text-decoration: line-through;
-      }
-    </style>
-  `
+  url: 'components/todo-item.html'
 })
 export class TodoItemComponent {
   store: TodoStore;
@@ -37,5 +19,9 @@ export class TodoItemComponent {
 
   toggle() {
     this.store.toggleDone(this.todo);
+  }
+
+  delete() {
+    this.store.delete(this.todo);
   }
 }

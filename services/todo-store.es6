@@ -20,6 +20,14 @@ export class TodoStore extends Store {
     this.emitChange();
   }
 
+  delete(todo) {
+    const index = this._todos.indexOf(todo);
+    if (index >= 0) {
+      this._todos.splice(index, 1);
+      this.emitChange();
+    }
+  }
+
   toggleDone(todo) {
     todo.done = !todo.done;
     this.emitChange();
