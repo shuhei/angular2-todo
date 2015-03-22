@@ -1,18 +1,4 @@
-class Store {
-  constructor() {
-    this._listeners = [];
-  }
-
-  addChangeListener(listener) {
-    this._listeners.push(listener);
-  }
-
-  emitChange() {
-    this._listeners.forEach((listener) => {
-      listener();
-    });
-  }
-}
+import {Store} from 'services/store';
 
 // TODO: Use unique ID.
 export class TodoStore extends Store {
@@ -21,17 +7,17 @@ export class TodoStore extends Store {
     this._todos = [];
   }
 
-  add(todo) {
-    this._todos.push(todo);
-    this.emitChange();
-  }
-
   getAll() {
     return this._todos;
   }
 
   countUndone() {
     return this._todos.filter((t) => !t.done).length;
+  }
+
+  add(todo) {
+    this._todos.push(todo);
+    this.emitChange();
   }
 
   toggleDone(todo) {
